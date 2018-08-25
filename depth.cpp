@@ -143,7 +143,7 @@ void process_file(void)
                 abort_("color_type of input file must be PNG_COLOR_TYPE_RGB (%d) (is %d)",
                        PNG_COLOR_TYPE_RGB, png_get_color_type(png_ptr, info_ptr));
 
-	int iColumn = width / 100 * 10;
+	int iColumn = width / 13;
 	int * arShift = new int[width];
 	for (int y = 0; y < height; ++y)
 	{
