@@ -2,23 +2,23 @@ CC=g++
 CFLAGS=-I.
 
 build: depth.cpp
-	@echo "Building ..."
+	@echo "Depth building ..."
 	@$(if $(shell dpkg -l | grep -E '^ii' | grep g++), , sudo apt -y -qq install g++)
 	@$(if $(shell dpkg -l | grep -E '^ii' | grep libpng-dev), , sudo apt -y -qq install libpng-dev)
 	@$(CC) -o depth depth.cpp -lpng
-	@echo "Built."
+	@echo "Depth built."
 
 .PHONY: clean, install, uninstall
 
 clean:
-	@echo "Cleaning ..."
-	@echo "Cleaned."
+	@echo "Depth cleaning ..."
+	@echo "Depth cleaned."
 
 install:
-	@echo "Installing ..."
+	@echo "Depth installing ..."
 	@sudo cp depth /usr/local/sbin/
-	@echo "Installed."
+	@echo "Depth installed."
 
 uninstall:
-	@echo "Uninstalling ..."
-	@echo "Uninstalled."
+	@echo "Depth uninstalling ..."
+	@echo "Depth uninstalled."
