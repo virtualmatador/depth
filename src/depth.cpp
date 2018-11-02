@@ -139,10 +139,19 @@ void write_png_file(char* file_name)
 
 void process_file(void)
 {
-        if (png_get_color_type(png_ptr, info_ptr) != PNG_COLOR_TYPE_RGB)
-                abort_("color_type of input file must be PNG_COLOR_TYPE_RGB (%d) (is %d)",
-                       PNG_COLOR_TYPE_RGB, png_get_color_type(png_ptr, info_ptr));
-
+	int iDepth = 0;
+	switch (png_get_color_type(png_ptr, info_ptr))
+	{
+		case PNG_COLOR_TYPE_RGB:
+			iDepth = 3;
+			break;
+		case PNG_COLOR_TYPE_RGBA:
+			iDepth = 4;
+			break;
+		default:
+			abort_("Unknown color type: %d", int(png_get_color_type(png_ptr, info_ptr)));
+			break;
+	}
 	int iColumn = 4.5 * pow(width, 0.4);
 	int * arShift = new int[width];
 	for (int y = 0; y < height; ++y)
@@ -155,7 +164,7 @@ void process_file(void)
 			iSide * x <= iSide * (width / 2 + iSide * width / 2 - (1 + iSide) / 2 - iSide * iColumn);
 			x += iSide)
 		{
-			png_byte* ptr = &(row[x * 3]);
+			png_byte* ptr = &(row[x * iDepth]);
 			int h = (ptr[0] + ptr[1] + ptr[2]) * 16 / 3 / 256;
 			if (h != 0)
 			{
@@ -179,12 +188,14 @@ void process_file(void)
 
 		for (int x = 0; x < width; ++x)
 		{
-			png_byte* ptr = &(row[x * 3]);
+			png_byte* ptr = &(row[x * iDepth]);
 			double yy = y % iColumn;
 			double xx = (x + arShift[x]) % iColumn;
 			ptr[0] = png_byte(int(pow(yy + iColumn / 3.6, 1.45) * pow(xx + iColumn / 3.4, 1.55)) % 256);
 			ptr[1] = png_byte(int(pow(yy + iColumn / 4.8, 1.15) * pow(xx + iColumn / 4.6, 1.25)) % 256);
 			ptr[2] = png_byte(int(pow(yy + iColumn / 2.2, 1.85) * pow(xx + iColumn / 2.4, 1.75)) % 256);
+			if (iDepth == 4)
+				ptr[3] = 255;
 		}
 	}
 	delete[] arShift;
