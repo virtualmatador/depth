@@ -1,6 +1,16 @@
-#!/usr/bin/python
+#!/bin/bash
 
-print("Depth configuring ...")
+echo "Depth configuring ..."
 
-print("Depth Configured.")
+PREREQUESTIES="make g++ libpng-dev "
+for prerequest in $PREREQUESTIES
+do
+    if [ "$(dpkg -l | grep '^ii' | awk '{print $2}' | grep '^$prerequest\$')" == "" ]
+    then
+        sudo apt -y -qq install $prerequest
+    else
+        echo $prerequest is present.
+    fi
+done
 
+echo "Depth configured."

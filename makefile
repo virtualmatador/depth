@@ -1,24 +1,30 @@
-CC=g++
-CFLAGS=-I.
+TARGET := depth
+LIBS := -lpng
 
-build: depth.cpp
-	@echo "Depth building ..."
-	@$(if $(shell dpkg -l | grep -E '^ii' | grep g++), , sudo apt -y -qq install g++)
-	@$(if $(shell dpkg -l | grep -E '^ii' | grep libpng-dev), , sudo apt -y -qq install libpng-dev)
-	@$(CC) -o depth depth.cpp -lpng
-	@echo "Depth built."
+DEBUG := $(if $(shell git symbolic-ref --short HEAD | grep master), , -g)
+SOURCES := $(wildcard src/*.cpp)
+OBJECTS := $(patsubst src/%.cpp, build/%.o, $(SOURCES))
+
+CC := g++
 
 .PHONY: clean, install, uninstall
 
+$(TARGET): $(OBJECTS) $(SHADERS)
+	$(CC) -o $@ $(OBJECTS) $(LIBS) -no-pie
+
 clean:
-	@echo "Depth cleaning ..."
-	@echo "Depth cleaned."
+	$(RM) -r build/
+	$(RM) -r $(TARGET)
 
 install:
-	@echo "Depth installing ..."
-	@sudo cp depth /usr/local/sbin/
-	@echo "Depth installed."
+		sudo cp $(TARGET) /usr/local/sbin/
 
 uninstall:
-	@echo "Depth uninstalling ..."
-	@echo "Depth uninstalled."
+		sudo $(RM) /usr/local/sbin/$(TARGET)
+
+define OBJECT_RULE
+build/$(subst $() \,,$(shell $(CC) -MM $(1)))
+	mkdir -p build/
+	$$(CC) $(DEBUG) -c -o $$@ $$<
+endef
+$(foreach src, $(SOURCES), $(eval $(call OBJECT_RULE,$(src))))
