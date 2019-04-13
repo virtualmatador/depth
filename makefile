@@ -17,10 +17,10 @@ clean:
 	$(RM) -r $(TARGET)
 
 install:
-	sudo cp $(TARGET) /usr/local/sbin/
+	sudo cp $(TARGET) /usr/local/bin/
 
 uninstall:
-	sudo $(RM) /usr/local/sbin/$(TARGET)
+	sudo $(RM) /usr/local/bin/$(TARGET)
 
 define OBJECT_RULE
 build/$(subst $() \,,$(shell $(CC) -MM $(1)))
