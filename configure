@@ -2,14 +2,21 @@
 
 echo "Depth configuring ..."
 
-PREREQUESTIES="make g++ libpng-dev "
-for prerequest in $PREREQUESTIES
+PREREQUESTIES=( \
+    "make" \
+    "g++" \
+    "libpng-dev" \
+)
+
+for ((i = 0; i < ${#PREREQUESTIES[@]}; ++i))
 do
-    if [ "$(dpkg -l | grep '^ii' | awk '{print $2}' | grep '^$prerequest\$')" == "" ]
+    if [ "$(dpkg -l | grep '^ii' | awk '{print $2}' | grep "^${PREREQUESTIES[i]}\(:\|$\)")" == "" ]
     then
-        sudo apt -y -qq install $prerequest
-    else
-        echo $prerequest is present.
+        if ! sudo apt -y -qq install ${PREREQUESTIES[i]}
+        then
+            echo "Failed to install ${PREREQUESTIES[i]}."
+            exit -1
+        fi
     fi
 done
 
