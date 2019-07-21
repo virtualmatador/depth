@@ -69,6 +69,9 @@ void read_png_file(char* file_name)
     if (setjmp(png_jmpbuf(png_ptr)))
         abort_("Error during read_image");
 
+    if (height * png_get_rowbytes(png_ptr,info_ptr) > 0x4000000)
+        abort_("image is too big.");
+
     bitmap = (png_byte*) malloc(height * png_get_rowbytes(png_ptr,info_ptr));
     row_pointers = (png_bytep*) malloc(sizeof(png_bytep) * height);
     for (int y=0; y<height; y++)
