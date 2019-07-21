@@ -4,7 +4,6 @@ LIBS := -lpng
 DEBUG := $(if $(shell git symbolic-ref --short HEAD | grep master), , -g)
 SOURCES := $(wildcard src/*.cpp)
 OBJECTS := $(patsubst src/%.cpp, build/%.o, $(SOURCES))
-
 CC := g++
 
 .PHONY: clean, install, uninstall
