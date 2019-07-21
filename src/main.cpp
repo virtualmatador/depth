@@ -6,7 +6,7 @@
 #include <math.h>
 #include <png.h>
 
-#include "../steriogram/steriogram.hpp"
+#include "steriogram/steriogram.hpp"
 
 int width, height;
 png_byte color_type;
