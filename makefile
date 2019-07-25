@@ -1,5 +1,5 @@
 TARGET := depth
-LIBS := -lpng
+LIBS := -lpng -lpthread
 
 DEBUG := $(if $(shell git symbolic-ref --short HEAD | grep master), , -g)
 SOURCES := $(wildcard src/*.cpp)

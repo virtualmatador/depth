@@ -135,13 +135,17 @@ void write_png_file(char* file_name)
 
 void process_file(void)
 {
+    int column = steriogram::GetColumn(width);
+    std::vector<unsigned char> pattern;
     switch (png_get_color_type(png_ptr, info_ptr))
     {
     case PNG_COLOR_TYPE_RGB:
-        Steriogram<3>(bitmap, width, height);
+        pattern = steriogram::CreatePattern<3>(column);
+        steriogram::Convert<3, 16>(bitmap, column, width, height, pattern.data());
         break;
     case PNG_COLOR_TYPE_RGBA:
-        Steriogram<4>(bitmap, width, height);
+        pattern = steriogram::CreatePattern<3>(column);
+        steriogram::Convert<4, 16>(bitmap, column, width, height, pattern.data());
         break;
     default:
         abort_("Unknown color type: %d", int(png_get_color_type(png_ptr, info_ptr)));
