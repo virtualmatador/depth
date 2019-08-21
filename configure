@@ -2,22 +2,20 @@
 
 echo "Depth configuring ..."
 
-PREREQUESTIES=( \
-    "make" \
-    "g++" \
-    "libpng-dev" \
-)
-
-for ((i = 0; i < ${#PREREQUESTIES[@]}; ++i))
-do
-    if [ "$(dpkg -l | grep '^ii' | awk '{print $2}' | grep "^${PREREQUESTIES[i]}\(:\|$\)")" == "" ]
-    then
-        if ! sudo apt -y -qq install ${PREREQUESTIES[i]}
-        then
-            echo "Failed to install ${PREREQUESTIES[i]}."
-            exit -1
-        fi
-    fi
-done
+packages=\
+"
+    g++
+    libpng-dev
+"
+libs=\
+"
+"
+cd prerequisite/
+if ! ./configure.sh "${packages}" "${libs}"
+then
+    echo "Depth configuration failed."
+    exit -1
+fi
+cd ../
 
 echo "Depth configured."
