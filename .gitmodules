@@ -1,6 +1,6 @@
 [submodule "src/steriogram"]
 	path = src/steriogram
-	url = https://bitbucket.org/ali-asadpoor/steriogram
+	url = ../steriogram
 [submodule "prerequisite"]
 	path = prerequisite
-	url = https://bitbucket.org/ali-asadpoor/prerequisite
+	url = ../prerequisite
