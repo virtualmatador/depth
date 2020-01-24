@@ -6,7 +6,7 @@
 #include <math.h>
 #include <png.h>
 
-#include "steriogram/steriogram.hpp"
+#include "stereogram/stereogram.hpp"
 
 int width, height;
 png_byte color_type;
@@ -135,17 +135,17 @@ void write_png_file(char* file_name)
 
 void process_file(void)
 {
-    int column = steriogram::GetColumn(width);
+    int column = stereogram::GetColumn(width);
     std::vector<unsigned char> pattern;
     switch (png_get_color_type(png_ptr, info_ptr))
     {
     case PNG_COLOR_TYPE_RGB:
-        pattern = steriogram::CreatePattern<3>(column);
-        steriogram::Convert<3, 16>(bitmap, column, width, height, pattern.data());
+        pattern = stereogram::CreateCurvedPattern<3>(column, 0x00010203);
+        stereogram::Convert<3, 16>(bitmap, column, width, height, pattern.data());
         break;
     case PNG_COLOR_TYPE_RGBA:
-        pattern = steriogram::CreatePattern<3>(column);
-        steriogram::Convert<4, 16>(bitmap, column, width, height, pattern.data());
+        pattern = stereogram::CreateCurvedPattern<4>(column, 0x00010203);
+        stereogram::Convert<4, 16>(bitmap, column, width, height, pattern.data());
         break;
     default:
         abort_("Unknown color type: %d", int(png_get_color_type(png_ptr, info_ptr)));
