@@ -140,12 +140,12 @@ void process_file(void)
     switch (png_get_color_type(png_ptr, info_ptr))
     {
     case PNG_COLOR_TYPE_RGB:
-        pattern = stereogram::CreateCurvedPattern<3>(column, 0x00010203);
-        stereogram::Convert<3, 16>(bitmap, column, width, height, pattern.data());
+        pattern = stereogram::CreatePattern<3>(column, 0x00010203);
+        stereogram::Convert<3, 8>(bitmap, column, width, height, pattern.data());
         break;
     case PNG_COLOR_TYPE_RGBA:
-        pattern = stereogram::CreateCurvedPattern<4>(column, 0x00010203);
-        stereogram::Convert<4, 16>(bitmap, column, width, height, pattern.data());
+        pattern = stereogram::CreatePattern<4>(column, 0x00010203);
+        stereogram::Convert<4, 8>(bitmap, column, width, height, pattern.data());
         break;
     default:
         abort_("Unknown color type: %d", int(png_get_color_type(png_ptr, info_ptr)));
