@@ -1,6 +1,3 @@
-[submodule "src/stereogram"]
-	path = src/stereogram
+[submodule "extern/stereogram"]
+	path = extern/stereogram
 	url = ../stereogram
-[submodule "prerequisite"]
-	path = prerequisite
-	url = ../prerequisite
