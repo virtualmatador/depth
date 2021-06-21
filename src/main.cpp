@@ -140,6 +140,11 @@ void process_file(void)
 
 int main(int argc, char **argv)
 {
+    if (argc == 2 && std::strcmp("--version", argv[1]) == 0)
+    {
+        std::cout << "Depth: " << PROJECT_VERSION << std::endl;
+        return 0;
+    }
     try
     {
         if (argc != 3)
@@ -154,6 +159,7 @@ int main(int argc, char **argv)
     catch(const std::exception& e)
     {
         std::cerr << e.what() << std::endl;
+        return -1;
     }
     return 0;
 }
