@@ -17,8 +17,10 @@ set(CPACK_DEBIAN_PACKAGE_DEPENDS "libpng16-16")
 include(CPack)
 
 add_custom_target("version" ALL
-    COMMAND ${CMAKE_COMMAND} -E echo ${CMAKE_PROJECT_VERSION} > "${CMAKE_CURRENT_BINARY_DIR}/version.txt"
+    COMMAND "${CMAKE_COMMAND}" -E echo ${CMAKE_PROJECT_VERSION} >
+        "${CMAKE_CURRENT_BINARY_DIR}/version.txt"
 )
 
+add_subdirectory("extern/cli")
 add_subdirectory("extern/stereogram")
 add_subdirectory("src")

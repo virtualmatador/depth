@@ -1,3 +1,6 @@
 [submodule "extern/stereogram"]
 	path = extern/stereogram
 	url = ../stereogram
+[submodule "extern/cli"]
+	path = extern/cli
+	url = https://github.com/virtualmatador/cli

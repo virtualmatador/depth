@@ -10,6 +10,8 @@
 
 #include <png.h>
 
+#include <cli.h>
+
 #include "stereogram.hpp"
 
 int width, height;
@@ -21,7 +23,7 @@ int number_of_passes;
 png_bytep* row_pointers;
 png_bytep bitmap;
 
-void read_png_file(char* file_name)
+void read_png_file(const char* file_name)
 {
     unsigned char header[8];
     FILE *fp = fopen(file_name, "rb");
@@ -73,7 +75,7 @@ void read_png_file(char* file_name)
     fclose(fp);
 }
 
-void write_png_file(char* file_name)
+void write_png_file(const char* file_name)
 {
     FILE *fp = fopen(file_name, "wb");
     if (!fp)
@@ -138,28 +140,34 @@ void process_file(void)
     }
 }
 
-int main(int argc, char **argv)
+int main(int argc, const char* argv[])
 {
-    if (argc == 2 && std::strcmp("--version", argv[1]) == 0)
+    Cli::parse(argc, argv,
     {
-        std::cout << "Depth: " << PROJECT_VERSION << std::endl;
-        return 0;
-    }
-    try
-    {
-        if (argc != 3)
         {
-            throw std::runtime_error(
-                "Usage: depth <in_file.png> <out_file.png>");
-        }
-        read_png_file(argv[1]);
-        process_file();
-        write_png_file(argv[2]);
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << std::endl;
-        return -1;
-    }
+            { "--version", "-v" },
+            Cli::Handler({ [&](const std::vector<std::string>& args)
+            {
+                std::cout << PROJECT_NAME << " " << PROJECT_VERSION <<
+                    std::endl;
+            }, 0, 0 })
+        },
+        {
+            { "", "" },
+            Cli::Handler({ [&](const std::vector<std::string>& args)
+            {
+                try
+                {
+                    read_png_file(args[0].c_str());
+                    process_file();
+                    write_png_file(args[1].c_str());
+                }
+                catch(const std::exception& e)
+                {
+                    std::cerr << e.what() << std::endl;
+                }
+            }, 2, 2 })
+        },
+    });
     return 0;
 }
