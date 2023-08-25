@@ -128,11 +128,11 @@ void process_file(void)
     {
     case PNG_COLOR_TYPE_RGB:
         pattern = stereogram::CreatePattern<3>(column, 0x00010203);
-        stereogram::Convert<3, 16>(bitmap, column, width, height, pattern.data());
+        stereogram::Convert<3, 16, 8>(bitmap, column, width, height, pattern.data());
         break;
     case PNG_COLOR_TYPE_RGBA:
         pattern = stereogram::CreatePattern<4>(column, 0x00010203);
-        stereogram::Convert<4, 16>(bitmap, column, width, height, pattern.data());
+        stereogram::Convert<4, 16, 8>(bitmap, column, width, height, pattern.data());
         break;
     default:
         throw std::runtime_error("Unknown color type");
